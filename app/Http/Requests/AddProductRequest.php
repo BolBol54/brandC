@@ -14,15 +14,21 @@ class AddProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $colors = explode(',', request('colors'));
+        return $colors;
+        $sizes = explode(',', request('sizes'));
+
+        request()->merge([
+            'colors' => $colors,
+            'sizes'  => $sizes
+        ]);
         return [
-            'title' => 'required',
+            'name' => 'required',
             'factoryPrice'  => 'required|numeric|min:2',
             'pricePerUnit'  => 'required|numeric|min:2',
-            'images'        => 'required|array',
+            'images.*'        => 'required',
             'colors'         => 'required|array',
-            'colors.*'       => 'required|exists:colors,name',
             'sizes'          => 'required|array',
-            'sizes.*'        => 'required|exists:sizes,name',
         ];
     }
 }

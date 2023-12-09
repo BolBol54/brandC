@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\ResponseHandler;
 use App\Http\Requests\AddProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class ProductController extends Controller
      */
     public function store(AddProductRequest $request)
     {
+        return $request->colors;
        $product = Product::create($request->only([
-           'title',
+           'name',
            'factoryPrice',
            'pricePerUnit'
        ]));
@@ -47,6 +49,7 @@ class ProductController extends Controller
        if ($request->has('sizes')) {
            $product->items()->attach($request->sizes);
        }
+       return ResponseHandler::success('Product Created', $product);
     }
 
     /**
